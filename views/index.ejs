@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="img/logo.png">
+  <title>generator</title>
+</head>
+
+<body>
+  <div class="container">
+    <nav><a href="/">image generator</a></nav>
+    <div class="content">
+      <div class="img"><img src="img/ddd.png" alt=""></div>
+      <p id="state"></p>
+      <div class="inputs">
+        <input type="text" id="prompt" placeholder="write here .... ">
+        <button onclick="creat(this.id)" id="<%= OPENAI_API_KEY %>" class="generate">generate</button>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <p><a href="https://www.instagram.com/dragon.fire.web/" target="_blank">dragon</a> © 2023 . all right reserved.</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+
+</html>
