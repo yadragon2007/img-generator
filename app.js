@@ -15,7 +15,6 @@ app.use(express.static("public"));
 //requsets
 app.get("/", (req, res) => {
   const {OPENAI_API_KEY} = process.env
-  console.log(OPENAI_API_KEY)
   res.render("index",{
     OPENAI_API_KEY
   });
