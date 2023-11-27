@@ -1,12 +1,16 @@
+//the input text
 const promptR = document.getElementById("prompt");
+// <p> that send the state
 const state = document.getElementById("state");
-const OPENAI_API_KEY = document.querySelector('.generate').id
-
 
 //generation function
-const creat = async (OPENAI_API_KEY) => {
+const creat = async () => {
   //loading
   state.innerHTML = `loading...`;
+  state.style.color = `aliceblue`;
+  //-----------------------------------------------//
+  //get OPENAI_API_KEY
+  const OPENAI_API_KEY = getKey();
   //get img
   const img = await fetch("https://api.openai.com/v1/images/generations", {
     method: "POST",
@@ -21,12 +25,11 @@ const creat = async (OPENAI_API_KEY) => {
       size: "1024x1024",
     }),
   });
-  //change outPut to json
+  //change outPut to json format
   const img_json = await img.json();
-  console.log(img_json);
   //done
   if (img_json.error != null) {
-    err(img_json.error.code)
+    err(img_json.error.code);
   } else {
     state.innerHTML = `done`;
     state.style.color = `aliceblue`;
@@ -35,7 +38,15 @@ const creat = async (OPENAI_API_KEY) => {
     imgOutPut.src = img_json.data[0].url;
   }
 };
-
+//get OPENAI_API_KEY
+const getKey = async () => {
+  const getData = await fetch("/get/key/", {
+    method: "POST",
+  });
+  const OPENAI_API_KEY = await getData.json();
+  return OPENAI_API_KEY;
+};
+// handle errors
 function err(errorCode) {
   if (errorCode == "content_policy_violation") {
     state.innerHTML = `أحترم نفسك يا وسخ`;
@@ -48,7 +59,7 @@ function err(errorCode) {
 
 //short cuts
 document.onkeyup = (e) => {
-  if (e.code == 'Enter') {
-    creat(OPENAI_API_KEY)
+  if (e.code == "Enter") {
+    creat();
   }
 };
