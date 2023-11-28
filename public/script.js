@@ -10,34 +10,40 @@ const creat = async () => {
   state.style.color = `aliceblue`;
   //-----------------------------------------------//
   //get OPENAI_API_KEY
-  const OPENAI_API_KEY = getKey();
-  //get img
-  const img = await fetch("https://api.openai.com/v1/images/generations", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: "dall-e-3",
-      prompt: promptR.value,
-      n: 1,
-      size: "1024x1024",
-    }),
+  getKey().then(async (OPENAI_API_KEY) => {
+    //get img
+    const img = await fetch("https://api.openai.com/v1/images/generations", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "dall-e-3",
+        prompt: promptR.value,
+        n: 1,
+        size: "1024x1024",
+      }),
+    });
+    //change outPut to json format
+    const img_json = await img.json();
+    console.log(img_json)
+    //done
+    if (img_json.error != null) {
+      err(img_json.error.code);
+    } else {
+      state.innerHTML = `done`;
+      state.style.color = `aliceblue`;
+      //change img src
+      const imgOutPut = document.querySelector("img");
+      imgOutPut.src = img_json.data[0].url;
+    }
   });
-  //change outPut to json format
-  const img_json = await img.json();
-  //done
-  if (img_json.error != null) {
-    err(img_json.error.code);
-  } else {
-    state.innerHTML = `done`;
-    state.style.color = `aliceblue`;
-    //change img src
-    const imgOutPut = document.querySelector("img");
-    imgOutPut.src = img_json.data[0].url;
-  }
 };
+
+
+
+
 //get OPENAI_API_KEY
 const getKey = async () => {
   const getData = await fetch("/get/key/", {
@@ -46,6 +52,12 @@ const getKey = async () => {
   const OPENAI_API_KEY = await getData.json();
   return OPENAI_API_KEY;
 };
+
+
+
+
+
+
 // handle errors
 function err(errorCode) {
   if (errorCode == "content_policy_violation") {
