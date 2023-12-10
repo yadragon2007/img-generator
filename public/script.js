@@ -32,7 +32,7 @@ const creat = async () => {
     if (img_json.error != null) {
       err(img_json.error.code);
     } else {
-      state.innerHTML = `بحبك يا مرمر`;
+      state.innerHTML = `done`;
       state.style.color = `aliceblue`;
       //change img src
       const imgOutPut = document.querySelector("img");
